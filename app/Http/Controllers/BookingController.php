@@ -75,22 +75,22 @@ class BookingController extends Controller
         return redirect()->route('booking.cek', ['kode_booking' => $booking->kode_booking])
             ->with('success', "Pendaftaran berhasil! Simpan Kode Booking Anda: {$booking->kode_booking} untuk melakukan pembayaran DP.");
     }
-    // Menampilkan Halaman Cek Booking & Form Upload Pembayaran (Public)
-    public function cekBooking(Request $request)
-    {
-        $booking = null;
-        if ($request->filled('kode_booking')) {
-            $booking = Booking::with(['trip', 'participants', 'payments'])
-                ->where('kode_booking', $request->kode_booking)
-                ->first();
+        // Menampilkan Halaman Cek Booking & Form Upload Pembayaran (Public)
+        public function cekBooking(Request $request)
+        {
+            $booking = null;
+            if ($request->filled('kode_booking')) {
+                $booking = Booking::with(['trip', 'participants', 'payments'])
+                    ->where('kode_booking', $request->kode_booking)
+                    ->first();
 
-            if (!$booking) {
-                return back()->with('error', 'Kode Booking tidak ditemukan. Periksa kembali kode Anda.');
+                if (!$booking) {
+                    return back()->with('error', 'Kode Booking tidak ditemukan. Periksa kembali kode Anda.');
+                }
             }
-        }
 
-        return view('public.cek-booking', compact('booking'));
-    }
+            return view('public.cek-booking', compact('booking'));
+        }
 
     // Menyimpan Bukti Pembayaran DP / Pelunasan
     public function uploadPayment(Request $request, Booking $booking)
